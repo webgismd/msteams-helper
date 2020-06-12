@@ -1,6 +1,6 @@
 #author: Michelle.Douville@gov.bc.ca 
 #date: June 11, 2020
-#description: The scripts can do sync members between MS Teams TEAM and an Active Directory Group. Removing members is an option flag <WithRemove>
+#description: The script syncs members between a specified MS Teams TEAM and an Active Directory Group. Removing members is an option flag <WithRemove>
 
 #usage: teams_ad_user_sync.ps1 <Team Group ID> <Active Directory Group than contain Members to add or remove from MS Teams TEAM> <WithRemove flag>
 #example: c:\sw_nt\Git\msteams-helper\teams_ad_user_sync.ps1 "1f6cded9-2277-49d6-8d5c-2ec7fc9d6639" "CSNRIMIT" "WithRemove"
