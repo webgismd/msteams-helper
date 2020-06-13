@@ -1,9 +1,11 @@
 #author: Michelle.Douville@gov.bc.ca 
 #date: June 11, 2020
-#description: The script syncs members between a specified MS Teams TEAM and an Active Directory Group. Removing members is an option flag <WithRemove>
+#description: The script syncs members between a specified MS Teams TEAM and an Active Directory Group. 
+#Removing members from a MS Teams TEAM is an optional flag <WithRemove>
+#optional <TestOnly> Flag can be used to do a test run from sync to get a report of changes and a CSV lists of AD and MS Teams TEAM current members.
 
-#usage: teams_ad_user_sync.ps1 <Team Group ID> <Active Directory Group than contain Members to add or remove from MS Teams TEAM> <WithRemove flag>
-#example: c:\sw_nt\Git\msteams-helper\teams_ad_user_sync.ps1 "1f6cded9-2277-49d6-8d5c-2ec7fc9d6639" "CSNRIMIT" "WithRemove"
+#usage: teams_ad_user_sync.ps1 <Team Group ID> <Active Directory Group that contain Members to add or remove from MS Teams TEAM> <WithRemove flag>
+#example: c:\sw_nt\Git\msteams-helper\teams_ad_user_sync.ps1 "1f6cded9-2277-49d6-8d5c-2ec7fc9d6639" "CSNRIMIT" "WithRemove" "TestOnly"
 
 #References:
 #https://github.com/microsoftgraph/msgraph-sdk-powershell/blob/dev/samples/4-UsersAndGroups.ps1
@@ -32,6 +34,8 @@
 $TeamGroupID=$args[0]
 $ADGroup=$args[1]
 $Action=$args[2]
+$TestOnly=$args[3]
+
 write-host "This script will read a list of members in the Active Directory Group $ADGroup and sync them to the MS Team $TeamGroupID " 
  
 ## Add user's email from an LDAP group in powershell – do a loop of users and feed the userid into this command:
@@ -54,9 +58,14 @@ $team_addlist = $mail_list | ? { $team_list.User -notcontains $_."Mail" }
 
 # adds users from a CSV generated from the AD Group list
 foreach ($member in $team_addlist) {
-       #Add-TeamUser -GroupId $TeamGroupID -User $($member.Mail)
-       Write-Host "Add-TeamUser -GroupId $TeamGroupID -User $($member.Mail)"
-      $i++  
+       
+        if {$TestOnly -eq "TestOnly") {
+          Write-Host "Add-TeamUser -GroupId $TeamGroupID -User $($member.Mail)"
+        } elseif {    
+          Add-TeamUser -GroupId $TeamGroupID -User $($member.Mail)
+        }
+        $i++  
+          
 }
 
 if($Action -eq "WithRemove") {
@@ -67,7 +76,11 @@ if($Action -eq "WithRemove") {
     #removes users from the MS Teams TEAM if they are not found in the CSV/AD Group list
     foreach ($teammember in $team_removelist) {
         #Remove-TeamUser -GroupId $TeamGroupID -User $($member.Mail)
-        Write-Host "Remove-TeamUser -GroupId $TeamGroupID -User $($teammember.User)"
+         if {$TestOnly -eq "TestOnly") {
+           Write-Host "Remove-TeamUser -GroupId $TeamGroupID -User $($teammember.User)"
+         } elseif { 
+           Remove-TeamUser -GroupId $TeamGroupID -User $($teammember.User)
+         }
         $r++
     }
     Write-Host "There were $r members removed from the MS Teams $TeamGroupID" 
