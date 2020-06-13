@@ -19,20 +19,20 @@
 
 ##     **** NEEDS TO BE COMPLETED ONCE ON DEVICE **** DEPENDENCIES 
 ##     Install powershell modules via powershell prompt (this took way too long, requires admin access):
-#Install-Module -Name MicrosoftTeams
-#Install-module Microsoft.Graph
+# Install-Module -Name MicrosoftTeams
+# Install-module Microsoft.Graph
 
 ##     **** NEEDS TO BE COMPLETED ONCE ON DEVICE **** 
 ##     This may be a one time step, to allow powershell via the device:
-#Connect-Graph
+# Connect-Graph
  
 ##     **** NEEDS TO BE COMPLETED ONCE ON DEVICE PER SESSION **** 
 ##     Connect to MS Teams this is required on session startup - 
-#Connect-MicrosoftTeams
+# Connect-MicrosoftTeams
 
 ## HELPER COMANDS
 ##     Find the Team (I sniffed my web traffic to find the GroupID for the IIT All staff Team)
-#Get-TeamChannel -GroupId 1f6cded9-2277-49d6-8d5c-2ec7fc9d6639  
+# Get-TeamChannel -GroupId 1f6cded9-2277-49d6-8d5c-2ec7fc9d6639  
 ##     Lists all the users in the Teams Channel:
 # Get-TeamUser -GroupId 1f6cded9-2277-49d6-8d5c-2ec7fc9d6639
 
@@ -72,7 +72,6 @@ foreach ($member in $team_addlist) {
           Add-TeamUser -GroupId $TeamGroupID -User $($member.Mail)
         }
         $i++  
-          
 }
 
 if($Action -eq "WithRemove") {
