@@ -2,7 +2,7 @@
 #date: June 11, 2020
 #description: The script syncs members between a specified MS Teams TEAM and an Active Directory Group. 
 #Removing members from a MS Teams TEAM is an optional flag <WithRemove>
-#optional <TestOnly> Flag can be used to do a test run from sync to get a report of changes and a CSV lists of AD and MS Teams TEAM current members.
+#<TestOnly or Update> Flag can be used to do a test run from sync to get a report of changes and a CSV lists of AD and MS Teams TEAM current members.
 
 #usage: teams_ad_user_sync.ps1 <Team Group ID> <Active Directory Group that contain Members to add or remove from MS Teams TEAM> <WithRemove flag>
 #example: c:\sw_nt\Git\msteams-helper\teams_ad_user_sync.ps1 "1f6cded9-2277-49d6-8d5c-2ec7fc9d6639" "CSNRIMIT" "WithRemove" "TestOnly"
@@ -59,9 +59,11 @@ $team_addlist = $mail_list | ? { $team_list.User -notcontains $_."Mail" }
 # adds users from a CSV generated from the AD Group list
 foreach ($member in $team_addlist) {
        
-        if {$TestOnly -eq "TestOnly") {
+        if ($TestOnly -eq "TestOnly") {
+          #doesn't apply change only writes out what it would do
           Write-Host "Add-TeamUser -GroupId $TeamGroupID -User $($member.Mail)"
-        } elseif {    
+        }
+        if ($TestOnly -eq "Update") {  
           Add-TeamUser -GroupId $TeamGroupID -User $($member.Mail)
         }
         $i++  
@@ -75,10 +77,12 @@ if($Action -eq "WithRemove") {
 
     #removes users from the MS Teams TEAM if they are not found in the CSV/AD Group list
     foreach ($teammember in $team_removelist) {
-        #Remove-TeamUser -GroupId $TeamGroupID -User $($member.Mail)
-         if {$TestOnly -eq "TestOnly") {
+
+         if ($TestOnly -eq "TestOnly") {
+             #doesn't apply change only writes out what it would do
            Write-Host "Remove-TeamUser -GroupId $TeamGroupID -User $($teammember.User)"
-         } elseif { 
+         } 
+         if ($TestOnly -eq "Update") {
            Remove-TeamUser -GroupId $TeamGroupID -User $($teammember.User)
          }
         $r++
