@@ -45,6 +45,7 @@ Install powershell modules via powershell prompt (this took way too long, requir
 ### **** NEEDS TO BE COMPLETED ONCE ON DEVICE****
 
 This may be a one time step, to allow powershell via the device:
+
 ``` powershell
  Connect-Graph
  ```
@@ -52,6 +53,7 @@ This may be a one time step, to allow powershell via the device:
 ### **** NEEDS TO BE COMPLETED ONCE ON DEVICE PER SESSION****
 
 Connect to MS Teams this is required on session startup -
+
 ``` powershell
  Connect-MicrosoftTeams
  ```
@@ -59,11 +61,13 @@ Connect to MS Teams this is required on session startup -
 ### HELPER COMANDS
 
 Find the Team (I sniffed my web traffic to find the GroupID for the IIT All staff Team)
+
 ``` powershell
  Get-TeamChannel -GroupId 1f6cded9-2277-49d6-8d5c-2ec7fc9d6639  
  ```
 
 Lists all the users in the Teams Channel:
+
 ``` powershell
  Get-TeamUser -GroupId 1f6cded9-2277-49d6-8d5c-2ec7fc9d6639
  ```
