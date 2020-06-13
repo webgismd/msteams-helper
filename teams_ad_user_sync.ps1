@@ -1,7 +1,7 @@
 #author: Michelle.Douville@gov.bc.ca 
 #date: June 11, 2020
 
-#description: The powershell script syncs members between a specified MS Teams TEAM and an Active Directory Group. 
+#description: This powershell script syncs members between a specified MS Teams TEAM and an Active Directory Group. 
 #             <WithRemove> is an optional flag for removing members from a MS Teams TEAM (ie. leave out if you only want to ADD users)
 #             <TestOnly or Update> is a flag that can be used to do a test run for a sync, to get a report of potential changes, and to create CSV lists of AD and MS Teams TEAM current members.
 
