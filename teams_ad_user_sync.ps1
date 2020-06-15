@@ -7,7 +7,7 @@
 #             <TestOnly or Update> is a flag that can be used to do a test run for a sync, to get a report of potential changes, and to create CSV lists of AD and MS Teams TEAM current members.
 #
 # Usage:     teams_ad_user_sync.ps1 <Team Group ID> <Active Directory Group that contain Members to add or remove from MS Teams TEAM> <WithRemove flag> <TestOnly or Update flag>
-# Example:   teams_ad_user_sync.ps1 "1f6cded9-2277-49d6-8d5c-2ec7fc9d6639" "CSNRIMIT" "WithRemove" "TestOnly"
+# Example:   teams_ad_user_sync.ps1 "1f6cded9-2277-49d6-8d5c-2ec7fc9d6639" "IIT All Staff" "WithRemove" "TestOnly"
 #
 # References:
 # https://github.com/microsoftgraph/msgraph-sdk-powershell/blob/dev/samples/4-UsersAndGroups.ps1
@@ -28,7 +28,7 @@
  
 ##     **** NEEDS TO BE COMPLETED ONCE ON DEVICE PER SESSION **** 
 ##     Connect to MS Teams this is required on session startup - 
-# Connect-MicrosoftTeams
+ Connect-MicrosoftTeams
 
 ## HELPER COMANDS
 ##     Find the Team (I sniffed my web traffic to find the GroupID for the IIT All staff Team)
@@ -59,7 +59,7 @@ $team_list = Import-Csv $teamlistFormat
 
 #prepare for loop, set counter and find members in AD not already in MS Teams
 $i = 0
-$team_addlist = $mail_list | ? { $team_list.User -notcontains $_."Mail" } 
+$team_addlist = $mail_list | Where-Object { $team_list.User -notcontains $_."Mail" } 
 
 # adds users from a CSV generated from the AD Group list
 foreach ($member in $team_addlist) {
@@ -77,7 +77,7 @@ foreach ($member in $team_addlist) {
 if($Action -eq "WithRemove") {
     #prepare for loop, set counter and find members in MS Teams not Active Directory
     $r = 0
-    $team_removelist = $team_list | ? { $mail_list.Mail -notcontains $_."User" } 
+    $team_removelist = $team_list | Where-Object { $mail_list.Mail -notcontains $_."User" } 
 
     #removes users from the MS Teams TEAM if they are not found in the CSV/AD Group list
     foreach ($teammember in $team_removelist) {
